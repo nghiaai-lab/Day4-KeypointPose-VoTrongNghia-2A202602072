@@ -35,7 +35,10 @@ class PublicLearnerContractTest(unittest.TestCase):
         self.assertEqual(len(train_images), 20)
         self.assertEqual(len(test_images), 10)
         self.assertEqual(len(test_labels), 10)
-        self.assertEqual(train_labels, [])
+        self.assertEqual(len(train_labels), 20)
+        for label_path in train_labels:
+            for line in label_path.read_text(encoding="utf-8").splitlines():
+                self.assertEqual(len(line.split()), 56, label_path.name)
         self.assertFalse((ROOT / "data").exists())
         self.assertFalse((ROOT / "scripts").exists())
         self.assertTrue((ROOT / "assets/schema/coco17-cvat-skeleton.svg").is_file())
@@ -50,7 +53,7 @@ class PublicLearnerContractTest(unittest.TestCase):
         checklist = (ROOT / "reports/REVIEWER_CHECKLIST.md").read_text(encoding="utf-8")
         learner_surfaces = "\n".join((readme, guide, rubric, html, annotations, checklist))
 
-        self.assertIn("Core: 20 ảnh chưa nhãn", readme)
+        self.assertIn("Core: 20 ảnh train", readme)
         self.assertIn("Test: 10 ảnh đã có nhãn", readme)
         self.assertIn("task core 20 ảnh", guide)
         self.assertIn('class="scope-map"', html)
@@ -91,6 +94,8 @@ class PublicLearnerContractTest(unittest.TestCase):
         result = subprocess.run(
             [
                 sys.executable,
+                "-X",
+                "utf8",
                 "tools/check_pose_labels.py",
                 "--images",
                 "dataset/images/test",

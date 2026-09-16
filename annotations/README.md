@@ -1,8 +1,9 @@
-# annotations/ - bản export gốc từ CVAT
+# annotations/ - bản COCO Keypoints đã rà soát
 
-Đặt **nguyên xi** file CVAT xuất ra vào đây. Đừng sửa tay, đừng đổi tên trường.
-Đây là bằng chứng bạn đã export đúng định dạng — và là thứ được mở ra khi
-điểm số của bạn trông lạ.
+`coco_keypoints/person_keypoints_default.json` được tạo từ bản export CVAT của
+20 ảnh, sau đó đã sửa các lỗi quan sát được ở lượt ảnh phủ và sắp lại đúng thứ tự
+17 điểm COCO. Chi tiết nằm trong [`reports/pose_qa.md`](../reports/pose_qa.md).
+Bản export ban đầu vẫn có trong lịch sử Git (commit `34b2201`).
 
 ```text
 annotations/

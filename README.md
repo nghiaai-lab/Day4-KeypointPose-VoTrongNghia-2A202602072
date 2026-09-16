@@ -10,7 +10,7 @@ và một **cờ visibility**. Cái cờ đó không phải ghi chú cho ngườ
 phần ba của nhãn, và nó quyết định khớp đó có được tính điểm hay không.
 
 ```text
-20 ảnh chưa có nhãn -> CVAT Skeleton (17 điểm) -> export COCO Keypoints 1.0
+20 ảnh train -> CVAT Skeleton (17 điểm) -> export COCO Keypoints 1.0
    -> tự kiểm 3 lượt + visibility report -> khoá nhãn
    -> protected release mở -> chấm bằng OKS -> rework
    -> Colab: fine-tune YOLO26-Pose -> visualize -> đánh giá
@@ -21,9 +21,13 @@ phần ba của nhãn, và nó quyết định khớp đó có được tính đ
 Lab có **một route bắt buộc**: 20 ảnh `person` COCO-17. Ba bộ dưới đây có vai trò khác nhau;
 không đổi chỗ cho nhau.
 
+**Trạng thái repo hiện tại:** 20 ảnh train đã có nhãn YOLO Pose cho 29 người.
+Bản COCO đã rà soát nằm ở `annotations/coco_keypoints/person_keypoints_default.json`;
+quá trình sửa nhãn và kết quả kiểm tra được ghi ở `reports/pose_qa.md`.
+
 | Bộ dữ liệu | Ở đâu | Bạn làm gì | Có train / nộp? |
 | --- | --- | --- | --- |
-| **Core: 20 ảnh chưa nhãn** | `dataset/images/train/` | Tạo một task CVAT `person` 17 điểm, gán tất cả người trong ảnh, export và chuyển thành nhãn YOLO Pose | **Có** |
+| **Core: 20 ảnh train** | `dataset/images/train/`, `dataset/labels/train/` | Đã gán 29 người theo skeleton `person` 17 điểm; dùng nhãn để train | **Có** |
 | **Test: 10 ảnh đã có nhãn** | `dataset/images/test/`, `dataset/labels/test/` | Chỉ dùng để đánh giá model trong notebook | **Không sửa, không train** |
 
 Không có bài hand/face trong bản phát hành này. Đừng tự tạo skeleton thứ hai hoặc thêm thư mục
@@ -47,7 +51,7 @@ Sau lab, bạn có thể:
 | Tệp | Nội dung |
 | --- | --- |
 | `dataset/labels/train/*.txt` | nhãn 20 ảnh train, định dạng Ultralytics YOLO Pose (56 số/dòng) |
-| `annotations/coco_keypoints/person_keypoints_default.json` | đúng bản export **COCO Keypoints 1.0** từ CVAT |
+| `annotations/coco_keypoints/person_keypoints_default.json` | bản **COCO Keypoints 1.0** đã rà soát từ export CVAT |
 | `reports/visibility_report.md`, `outputs/visibility_report.json` | bảng đếm cờ theo từng khớp |
 | `GUIDELINE_MINI.md` | luật của nhóm bạn + ít nhất ba ca mơ hồ đã gặp và cách quyết |
 | `outputs/eval_vs_gold.json` | kết quả chấm với gold (sau khi protected release mở) |
@@ -61,12 +65,12 @@ Sau lab, bạn có thể:
 
 ```text
 Day4-Lab/
-  dataset/images/train/   20 ảnh - BÀI CHÍNH, không có nhãn khi pull
+  dataset/images/train/   20 ảnh - BÀI CHÍNH
   dataset/images/test/    10 ảnh - có nhãn sẵn, dùng để đánh giá model
-  dataset/labels/train/   nhãn của bạn đặt ở đây (đang trống)
+  dataset/labels/train/   nhãn YOLO Pose của 20 ảnh (29 skeleton)
   dataset/labels/test/    nhãn phát sẵn - KHÔNG sửa, KHÔNG dùng để train
   gold/                   trống; protected release đặt gold của train ở đây tại mốc 2:30
-  annotations/            bản export gốc COCO Keypoints của 20 ảnh core
+  annotations/            bản COCO Keypoints đã rà soát của 20 ảnh core
   tools/                  check / visibility / evaluate / visualize / convert
   notebooks/              notebook Colab: fine-tune YOLO26-Pose + đánh giá
   reports/                mẫu báo cáo và reviewer checklist
