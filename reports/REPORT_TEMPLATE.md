@@ -1,117 +1,84 @@
 # Báo cáo Ngày 4 - Keypoint & Pose
 
-Họ tên: ______   Nhóm: ______   Ngày: ______
-
-> Cách dùng: copy file này thành `reports/REPORT.md`. Điền bằng số liệu do công cụ sinh ra;
-> không tự ước lượng hoặc sửa số trong file JSON.
+Họ tên: Võ Trọng Nghĩa | Nhóm: chưa có thông tin | Ngày: 2026-09-16
 
 ## 1. Nhãn của tôi
 
-<!-- Lấy số từ reports/visibility_report.md hoặc outputs/visibility_report.json sau Chặng 4.
-Số ảnh phải là 20; số skeleton là tổng số người trong 20 ảnh. Thời gian trung bình = tổng
-thời gian gán / 20. -->
-
 | Chỉ số | Giá trị |
 | --- | ---: |
-| Số ảnh đã gán | |
-| Số skeleton | |
-| v=2 / v=1 / v=0 | |
-| Thời gian trung bình mỗi ảnh | |
+| Số ảnh đã gán | 20 |
+| Số skeleton | 29 |
+| v=2 / v=1 / v=0 | 359 / 111 / 23 |
+| Thời gian trung bình mỗi ảnh | 10 phút/ảnh (theo người gán cung cấp) |
 
-Ba khớp có `%v=1` cao nhất (chép từ `reports/visibility_report.md`):
+Với 20 ảnh, tổng thời gian tương ứng là **200 phút** (3 giờ 20 phút).
 
-1.
-2.
-3.
+Ba khớp có tỷ lệ `v=1` cao nhất theo [bảng visibility](visibility_report.md):
 
-Chúng có đúng là những khớp bạn thấy khó gán nhất không? Nếu không, giải thích.
+1. `left_ear`: 10/29, 34%.
+2. `right_ankle`: 10/29, 34%.
+3. `right_knee`: 9/29, 31% (đồng hạng với `nose`, `left_eye`, `right_eye`).
 
-<!-- Trả lời 2–4 câu. Phân biệt “hay bị che” với “khó xác định vị trí giải phẫu”; nêu bằng
-chứng nhìn thấy thay vì chỉ nêu cảm giác. -->
+`v=1` cao phản ánh tần suất bị che, chưa đủ để kết luận khớp nào khó xác định vị trí giải phẫu nhất. Tai trái thường khuất do góc quay đầu hoặc mũ; đầu gối và mắt cá phải thường bị xe, bàn, trang phục che. Ví dụ `train_11` người thứ 1: phần chân dưới bị mèo/bàn che, nên đầu gối còn trong ảnh được ước lượng bằng `v=1`. Với ảnh rất nhỏ như `train_13`, nhận đúng bên trái/phải khó ngay cả khi khớp không bị che.
 
 ## 2. Chấm với gold
 
-<!-- Lấy hai cột từ outputs/eval_vs_gold.json: một lần ngay khi protected release mở và một
-lần sau rework. Đếm số phần tử trong từng danh sách lỗi, không tự làm tròn. -->
+Nguồn số: [trước rework](../outputs/eval_vs_gold_before.json) và [sau rework](../outputs/eval_vs_gold.json). Cả hai lượt đều ghép được 29/29 người, không thiếu hoặc thừa skeleton.
 
 | Chỉ số | Trước rework | Sau rework |
 | --- | ---: | ---: |
-| OKS trung bình | | |
-| OKS@0.50 | | |
-| OKS@0.75 | | |
-| Lỗi `dao_trai_phai` | | |
-| Lỗi `nham_nguoi` | | |
-| Lỗi `xoa_khop_bi_che` | | |
+| OKS trung bình | 0.8131 | 0.8504 |
+| OKS@0.50 | 1.0000 | 1.0000 |
+| OKS@0.75 | 0.7586 | 0.8966 |
+| Lỗi `dao_trai_phai` | 1 | 0 |
+| Lỗi `nham_nguoi` | 4 | 0 |
+| Lỗi `xoa_khop_bi_che` | 0 | 0 |
+| Lỗi `truot_han` | 2 | 0 |
 
-**Tôi đã sửa gì giữa hai lần chạy** (ghi cụ thể: ảnh nào, người thứ mấy, khớp nào):
+Đã sửa trong bản COCO, rồi chuyển lại toàn bộ 20 file YOLO Pose:
 
-<!-- Mỗi dòng phải có: tên ảnh + người thứ mấy + keypoint + thao tác sửa. Không viết “đã sửa
-lại một số lỗi”. -->
+- `train_01.jpg`, người thứ 1: chuyển `left_wrist` từ vùng người bên cạnh về cổ tay của người này; chỉnh `right_elbow`, `left_hip`, `right_hip` và bounding box theo phần cơ thể nhìn thấy.
+- `train_03.jpg`, người thứ 2: chuyển `right_wrist`, `right_knee`, `right_ankle` khỏi vị trí trôi/nhầm người; chỉnh `right_elbow`, hai hông, `left_ankle` và bounding box theo dáng người.
+- `train_13.jpg`, người thứ 3 (người nhỏ ở mép trái): đổi lại danh tính toàn bộ cặp keypoint trái/phải. Gold ghép người này với người thứ 1 trong file gold.
+- `train_15.jpg`, người thứ 1 (đội mũ bên trái): đưa `left_elbow`, `left_wrist` từ vùng xe về tay của người; chỉnh `left_shoulder`, `right_elbow`, `right_wrist`, hai hông, hai đầu gối, hai mắt cá và bounding box.
 
--
--
--
-
-**Lỗi đảo trái/phải của tôi xảy ra ở ảnh nào?** Ảnh đó dễ hay khó? Nếu là ảnh dễ,
-bạn nghĩ vì sao mình vẫn sai?
-
-<!-- Nếu không có lỗi, ghi rõ “Không có lỗi đảo trái/phải trong toàn bộ 20 ảnh.” -->
+Lỗi đảo trái/phải nằm ở `train_13.jpg`, người thứ 3. Người quá nhỏ, đường vai và chân chỉ cách nhau vài chục pixel nên nhãn ban đầu nhìn thoáng qua vẫn có vẻ nối đúng khớp; đối chiếu từng bên với gold mới thấy danh tính trái/phải bị đảo. Sau rework vẫn có 40 cảnh báo lệch nhẹ và 40 cờ visibility khác gold. Có 78 khớp gold để `v=0` nhưng nhãn của tôi có điểm; các khớp này không bị tính vào OKS, và tôi không xoá chỉ để giống gold khi điểm vẫn có căn cứ trong ảnh.
 
 ## 3. Kiểm chéo
 
-Bạn cùng nhóm: ______
-
-Khớp lệch `%v=1` nhiều nhất giữa hai bảng đếm:
+Bạn cùng nhóm: **Không có kiểm tra chéo** (theo người gán cung cấp).
 
 | Khớp | Bạn | Họ | Lệch | Nguyên nhân (guideline hay gán sai?) |
 | --- | ---: | ---: | ---: | --- |
-| | | | | |
-| | | | | |
+| Không áp dụng | — | — | — | Không có bảng visibility của người thứ hai để đối chiếu. |
 
-Luật mới đã bổ sung vào `GUIDELINE_MINI.md` sau khi thống nhất:
-
-<!-- Viết một rule kiểm chứng được: điều kiện nhìn thấy/căn cứ vị trí → chọn v=1 hoặc v=0.
-Không chỉ ghi “cẩn thận hơn khi gán”. -->
-
--
+Không có luật mới được thống nhất qua kiểm chéo vì bước này không diễn ra. Quy tắc đã dùng được ghi trong [GUIDELINE_MINI.md](../GUIDELINE_MINI.md): khớp bị vật che nhưng vẫn nằm trong khung được đặt tọa độ ước lượng với `v=1`; chỉ dùng `v=0` khi khớp ra ngoài mép ảnh. Đây là quy tắc của lượt gán nhãn, không phải kết quả thống nhất với bạn cùng nhóm.
 
 ## 4. Model
 
-<!-- Chép số từ outputs/eval_model.json sau Chặng 6. “Chênh” = sau fine-tune trừ baseline;
-đây là quan sát trên tập test, không phải chất lượng sản phẩm. -->
+Đã chạy [notebook Colab](https://colab.research.google.com/drive/1USqOiCsrkeYoMf7LKdGhssLjKv6J7j6A?hl=vi) với GPU Tesla T4. Tập train có 20 ảnh/29 người; tập test của `data.yaml` có 10 ảnh/13 người. Cấu hình đặt 80 epoch, `patience=30`, nên quá trình dừng sớm ở epoch 39 và chọn checkpoint tốt nhất tại epoch 9. Nguồn số: [outputs/eval_model.json](../outputs/eval_model.json).
 
 | Chỉ số | yolo26n-pose gốc | Sau fine-tune | Chênh |
 | --- | ---: | ---: | ---: |
-| pose_mAP50 | | | |
-| pose_mAP50-95 | | | |
-| pose_precision | | | |
-| pose_recall | | | |
-| box_mAP50-95 | | | |
+| pose_mAP50 | 0.8450 | 0.8450 | +0.0000 |
+| pose_mAP50-95 | 0.6853 | 0.6908 | +0.0055 |
+| pose_precision | 0.9734 | 0.9792 | +0.0058 |
+| pose_recall | 0.8462 | 0.8462 | +0.0000 |
+| box_mAP50 | 0.9785 | 0.9600 | -0.0185 |
+| box_mAP50-95 | 0.8119 | 0.8041 | -0.0078 |
 
-### Trả lời năm câu hỏi ở cuối notebook
+### Năm câu hỏi ở cuối notebook
 
-> Mỗi câu cần trỏ tới ảnh/chỉ số cụ thể. Một con số thấp không tự chứng minh nhãn sai;
-> kiểm lại bằng bằng chứng thị giác và kết quả gold.
+1. `pose_mAP50-95` tăng **0.0055** trên 10 ảnh test, từ 0.6853 lên 0.6908. Đây là thay đổi nhỏ; 20 ảnh train chưa đủ để kết luận chất lượng model tăng ổn định. Trong cùng lượt đánh giá, `box_mAP50-95` giảm 0.0078, cho thấy cải thiện pose không đi cùng cải thiện phát hiện hộp người.
 
-1. `pose_mAP50-95` thay đổi bao nhiêu? Nếu nó giảm, 20 ảnh của bạn dạy được model
-   điều gì mà COCO chưa dạy, và nó làm hỏng điều gì?
+2. Sau fine-tune, `box_mAP50-95` cao hơn `pose_mAP50-95` **0.1133** (0.8041 so với 0.6908); ở model gốc, chênh **0.1266**. Trên tập test này, tìm đúng hộp người dễ hơn đặt đủ 17 khớp chính xác, đặc biệt khi chi bị vật thể che. `test_07.jpg` có người ngồi sau quầy và hộp bánh: hộp người vẫn được phát hiện, nhưng cổ tay trái bị model kéo lên mặt kính.
 
-2. `box_mAP` và `pose_mAP` chênh nhau bao nhiêu? Model tìm *người* dễ hơn hay tìm
-   *khớp* dễ hơn? Vì sao?
+3. Trong ảnh dự đoán `test_07.jpg`, model đặt `left_wrist` tại khoảng **(365, 291)**, trên hộp bánh bằng kính, với confidence khoảng **0.253**. Đây là lỗi hình dáng kiểu **trượt hẳn**: điểm nằm trên vật thể che thay vì trên tay người. Nhãn test đặt khớp này `v=0`, nên ví dụ này là lỗi nhìn thấy khi mở ảnh dự đoán, không phải lỗi được cộng vào phép tính OKS của khớp đó.
 
-3. Một ảnh test model đoán sai - gọi tên lỗi theo bốn loại của slide 43
-   (lệch nhẹ / đảo trái/phải / nhầm người / trượt hẳn):
+4. Trên tập train, `train_13.jpg` người thứ **3** (người nhỏ ở mép trái) có OKS model so với nhãn thấp nhất: **0.296**. Nhãn sau rework của chính người đó đạt **0.8135** khi so gold. Ảnh phủ cho thấy model nén các điểm chi của người rất nhỏ vào một dải hẹp, còn nhãn đã tách hai bên theo thân và chân; bằng chứng gold và ảnh nghiêng về nhãn sau rework.
 
-4. Ảnh nào có OKS thấp nhất giữa nhãn của bạn và model? Ai đúng, và bạn dựa vào đâu?
+5. **Không.** Ảnh tôi gán kém nhất theo gold là `train_12.jpg`, người thứ 1, OKS **0.6313**, còn model bất đồng với nhãn nhiều nhất ở `train_13.jpg`, người thứ 3, OKS **0.296**. Điều này chỉ ra hai khó khăn khác nhau: `train_12` còn sai lệch vị trí so gold; `train_13` là người quá nhỏ khiến model dự đoán kém dù nhãn đã được gold xác nhận ở mức OKS 0.8135.
 
-5. Ảnh bạn gán tệ nhất có *cũng* là ảnh model đoán tệ nhất không? Nếu có, điều đó
-   nói gì về bức ảnh đó?
+## 5. Một rule evidence đã dùng
 
-## 5. Một rule evidence bạn đã dùng
-
-Chọn một keypoint trong ảnh core mà bạn phải quyết định giữa `v=1` và `v=0`. Nêu ảnh, người,
-khớp, bằng chứng nhìn thấy và lý do chọn trạng thái đó trong 3-5 câu.
-
-<!-- Cấu trúc gợi ý: (1) train_XX + người thứ mấy + keypoint; (2) căn cứ thị giác như phần cơ
-thể liền kề, trang phục hoặc vật che; (3) vì sao khớp còn trong khung (v=1) hay đã ra khỏi
-khung (v=0). -->
+Ở `train_11.jpg`, người thứ 1, `left_knee` nằm sau con mèo và mặt bàn nhưng vẫn trong khung ảnh. Vị trí hông và hướng của phần chân cho phép ước lượng đầu gối, dù không thấy trực tiếp khớp. Vì thế điểm được giữ ở tọa độ ước lượng với `v=1`. Hai mắt cá của người này ở ngoài mép dưới ảnh nên là `v=0`.

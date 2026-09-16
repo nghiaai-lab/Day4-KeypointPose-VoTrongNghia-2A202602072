@@ -1,8 +1,6 @@
 # Báo cáo Ngày 4 - Keypoint & Pose
 
-Họ tên: Võ Trọng Nghĩa  
-Nhóm: chưa có thông tin  
-Ngày: 2026-09-16
+Họ tên: Võ Trọng Nghĩa | Nhóm: chưa có thông tin | Ngày: 2026-09-16
 
 ## 1. Nhãn của tôi
 
@@ -11,7 +9,9 @@ Ngày: 2026-09-16
 | Số ảnh đã gán | 20 |
 | Số skeleton | 29 |
 | v=2 / v=1 / v=0 | 359 / 111 / 23 |
-| Thời gian trung bình mỗi ảnh | Chưa xác định: không có nhật ký thời gian gán |
+| Thời gian trung bình mỗi ảnh | 10 phút/ảnh (theo người gán cung cấp) |
+
+Với 20 ảnh, tổng thời gian tương ứng là **200 phút** (3 giờ 20 phút).
 
 Ba khớp có tỷ lệ `v=1` cao nhất theo [bảng visibility](visibility_report.md):
 
@@ -46,7 +46,13 @@ Lỗi đảo trái/phải nằm ở `train_13.jpg`, người thứ 3. Người q
 
 ## 3. Kiểm chéo
 
-Chưa có tên và bảng visibility của bạn cùng nhóm, nên chưa thể tính chênh lệch theo từng khớp hoặc kết luận bất đồng do guideline hay do gán sai. Quy tắc đang dùng được ghi trong [GUIDELINE_MINI.md](../GUIDELINE_MINI.md): khớp bị vật che nhưng vẫn nằm trong khung được đặt tọa độ ước lượng với `v=1`; chỉ dùng `v=0` khi khớp ra ngoài mép ảnh.
+Bạn cùng nhóm: **Không có kiểm tra chéo** (theo người gán cung cấp).
+
+| Khớp | Bạn | Họ | Lệch | Nguyên nhân (guideline hay gán sai?) |
+| --- | ---: | ---: | ---: | --- |
+| Không áp dụng | — | — | — | Không có bảng visibility của người thứ hai để đối chiếu. |
+
+Không có luật mới được thống nhất qua kiểm chéo vì bước này không diễn ra. Quy tắc đã dùng được ghi trong [GUIDELINE_MINI.md](../GUIDELINE_MINI.md): khớp bị vật che nhưng vẫn nằm trong khung được đặt tọa độ ước lượng với `v=1`; chỉ dùng `v=0` khi khớp ra ngoài mép ảnh. Đây là quy tắc của lượt gán nhãn, không phải kết quả thống nhất với bạn cùng nhóm.
 
 ## 4. Model
 

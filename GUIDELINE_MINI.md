@@ -51,7 +51,8 @@ là bên trái cơ thể, màu cam là bên phải, màu vàng là khớp bị c
 - Vì sao: không nhìn thấy các khớp mặt nhưng chúng vẫn nằm trong khung.
 - Nếu người khác quyết ngược lại thì model học sai cái gì: mặt được xem là nhìn thấy rõ và trái/phải không nhất quán với vai/hông.
 
-## 4. Sau khi so visibility report với bạn cùng nhóm
+## 4. Trạng thái kiểm chéo
 
-- Chưa có bộ nhãn của bạn cùng nhóm để chạy `--compare`; không điền tỷ lệ so sánh giả định.
+- Không thực hiện kiểm tra chéo với bạn cùng nhóm (theo người gán cung cấp).
+- Không có bảng thứ hai để chạy `--compare`, nên không tính tỷ lệ chênh lệch hoặc bổ sung luật dựa trên một cuộc thống nhất không diễn ra.
 - Báo cáo visibility của lượt này nằm ở `reports/visibility_report.md`.
