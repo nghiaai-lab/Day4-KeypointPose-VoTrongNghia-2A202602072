@@ -45,7 +45,7 @@ theo bounding box, không phải lỗi visibility của bốn khớp đó.
 Ảnh mẫu của ba ca mơ hồ: [train_06](examples/train_06_overlay.jpg),
 [train_11](examples/train_11_overlay.jpg), [train_14](examples/train_14_overlay.jpg).
 
-Lượt chấm gold sau rework: OKS trung bình **0.8500**, OKS@0.50 **1.0000**,
+Lượt chấm gold sau rework: OKS trung bình **0.8504**, OKS@0.50 **1.0000**,
 OKS@0.75 **0.8966**; không còn cảnh báo đảo trái/phải, nhầm người, trượt hẳn,
 hoặc xoá khớp bị che. Các khớp gold đặt `v=0` không được tự động xoá khỏi nhãn:
 chỉ dùng `v=0` khi khớp nằm ngoài khung ảnh hoặc không có căn cứ vị trí.
